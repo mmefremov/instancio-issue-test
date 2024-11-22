@@ -28,12 +28,12 @@ public class LoanModelProvider {
 
     public static Model<LoanRequest> createLoanRequestModelWithCollectionModels(List<String> numbers) {
         return Instancio.of(LoanRequest.class)
-                .setModel(field(LoanRequest::getAccounts), createAccountListModel(numbers))
+                .setModel(field(LoanRequest::getAccounts), createAccountListModelWithRootSelector(numbers))
                 .setModel(field(LoanRequest::getSchedule), createDueListModel())
                 .toModel();
     }
 
-    private static Model<List<Account>> createAccountListModel(List<String> numbers) {
+    private static Model<List<Account>> createAccountListModelWithRootSelector(List<String> numbers) {
         return Instancio.ofList(Account.class)
                 .generate(root(), gen -> gen.collection().size(numbers.size()))
                 .generate(field(Account::getOrder), Generators::intSeq)
@@ -43,6 +43,21 @@ public class LoanModelProvider {
 
     private static Model<List<Due>> createDueListModel() {
         return Instancio.ofList(Due.class)
+                .generate(field(Due::getAmount), gen -> gen.math().bigDecimal().scale(0))
+                .generate(field(Due::getDate), gen -> gen.temporal().localDate().future())
+                .toModel();
+    }
+
+    public static Model<LoanRequest> createLoanRequestModelWithTwoRootSelectors(List<String> numbers) {
+        return Instancio.of(LoanRequest.class)
+                .setModel(field(LoanRequest::getAccounts), createAccountListModelWithRootSelector(numbers))
+                .setModel(field(LoanRequest::getSchedule), createDueListModelWithRootSelector())
+                .toModel();
+    }
+
+    private static Model<List<Due>> createDueListModelWithRootSelector() {
+        return Instancio.ofList(Due.class)
+                .generate(root(), gen -> gen.collection().minSize(2))
                 .generate(field(Due::getAmount), gen -> gen.math().bigDecimal().scale(0))
                 .generate(field(Due::getDate), gen -> gen.temporal().localDate().future())
                 .toModel();
