@@ -10,6 +10,7 @@ import org.instancio.core.model.LoanRequest;
 import org.instancio.generators.Generators;
 
 import java.util.List;
+import java.util.ListIterator;
 
 import static org.instancio.Select.field;
 import static org.instancio.Select.root;
@@ -18,10 +19,11 @@ import static org.instancio.Select.root;
 public class LoanModelProvider {
 
     public static Model<LoanRequest> createLoanRequestModelWithoutRootSelector(List<String> numbers) {
+        ListIterator<String> iterator = numbers.listIterator();
         return Instancio.of(LoanRequest.class)
                 .generate(field(LoanRequest::getAccounts), gen -> gen.collection().maxSize(numbers.size()))
                 .generate(field(Account::getOrder), Generators::intSeq)
-                .supply(field(Account::getNumber), () -> numbers.listIterator().next())
+                .supply(field(Account::getNumber), iterator::next)
                 .setModel(field(LoanRequest::getSchedule), createDueListModel())
                 .toModel();
     }
@@ -34,10 +36,11 @@ public class LoanModelProvider {
     }
 
     private static Model<List<Account>> createAccountListModelWithRootSelector(List<String> numbers) {
+        ListIterator<String> iterator = numbers.listIterator();
         return Instancio.ofList(Account.class)
                 .generate(root(), gen -> gen.collection().size(numbers.size()))
                 .generate(field(Account::getOrder), Generators::intSeq)
-                .supply(field(Account::getNumber), () -> numbers.listIterator().next())
+                .supply(field(Account::getNumber), iterator::next)
                 .toModel();
     }
 
