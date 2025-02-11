@@ -31,7 +31,7 @@ class CreationDueWithAssignValueTest {
 
     @Test
     @Order(1)
-    void testCreationAccountWithAssignValueToOtherLocalObject() {
+    void testCreationDueWithAssignValueToOtherLocalObject() {
         Due due1 = Instancio.of(dueModel)
                 .assign(Assign.valueOf(Due::getAmount)
                                 .to(field(Due::getAmountLocal))
@@ -47,7 +47,7 @@ class CreationDueWithAssignValueTest {
 
     @Test
     @Order(2)
-    void testCreationAccountWithAssignValueToObjectFromAnotherMethod() {
+    void testCreationDueWithAssignValueToObjectFromAnotherMethod() {
         Due due3 = Instancio.of(dueModel).create();
         log.info("due3: {}", due3);
         Assertions.assertThat(due3.getAmountLocal()).as("due amountLocal3").isEqualTo(due3.getAmount());
