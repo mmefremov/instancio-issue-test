@@ -47,6 +47,7 @@ public class LoanModelProvider {
     private static Model<List<Due>> createDueListModel() {
         return Instancio.ofList(Due.class)
                 .generate(field(Due::getAmount), gen -> gen.math().bigDecimal().scale(0))
+                .setBlank(field(Due::getAmountLocal))
                 .generate(field(Due::getDate), gen -> gen.temporal().localDate().future())
                 .toModel();
     }
@@ -62,6 +63,7 @@ public class LoanModelProvider {
         return Instancio.ofList(Due.class)
                 .generate(root(), gen -> gen.collection().minSize(2))
                 .generate(field(Due::getAmount), gen -> gen.math().bigDecimal().scale(0))
+                .setBlank(field(Due::getAmountLocal))
                 .generate(field(Due::getDate), gen -> gen.temporal().localDate().future())
                 .toModel();
     }

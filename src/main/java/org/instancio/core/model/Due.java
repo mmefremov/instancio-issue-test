@@ -14,5 +14,7 @@ public class Due {
 
     private BigDecimal amount;
 
+    private BigDecimal amountLocal;
+
     private LocalDate date;
 }
