@@ -50,6 +50,6 @@ class CreationDueWithAssignValueTest {
     void testCreationAccountWithAssignValueToObjectFromAnotherMethod() {
         Due due3 = Instancio.of(dueModel).create();
         log.info("due3: {}", due3);
-        Assertions.assertThat(due3.getAmountLocal()).as("due amountLocal2").isEqualTo(due3.getAmount());
+        Assertions.assertThat(due3.getAmountLocal()).as("due amountLocal3").isEqualTo(due3.getAmount());
     }
 }
