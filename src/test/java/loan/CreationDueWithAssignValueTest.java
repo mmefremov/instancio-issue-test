@@ -7,6 +7,7 @@ import org.instancio.Instancio;
 import org.instancio.Model;
 import org.instancio.core.model.Due;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -29,7 +30,8 @@ class CreationDueWithAssignValueTest {
     }
 
     @Test
-    void testCreationAccountWithAssignValue() {
+    @Order(1)
+    void testCreationAccountWithAssignValueToOtherLocalObject() {
         Due due1 = Instancio.of(dueModel)
                 .assign(Assign.valueOf(Due::getAmount)
                                 .to(field(Due::getAmountLocal))
@@ -41,5 +43,13 @@ class CreationDueWithAssignValueTest {
         Due due2 = Instancio.of(dueModel).create();
         log.info("due2: {}", due2);
         Assertions.assertThat(due2.getAmountLocal()).as("due amountLocal2").isEqualTo(due2.getAmount());
+    }
+
+    @Test
+    @Order(2)
+    void testCreationAccountWithAssignValueToObjectFromAnotherMethod() {
+        Due due3 = Instancio.of(dueModel).create();
+        log.info("due3: {}", due3);
+        Assertions.assertThat(due3.getAmountLocal()).as("due amountLocal2").isEqualTo(due3.getAmount());
     }
 }
