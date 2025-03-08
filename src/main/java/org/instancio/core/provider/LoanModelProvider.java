@@ -21,7 +21,7 @@ public class LoanModelProvider {
     public static Model<LoanRequest> createLoanRequestModelWithoutRootSelector(List<String> numbers) {
         ListIterator<String> iterator = numbers.listIterator();
         return Instancio.of(LoanRequest.class)
-                .generate(field(LoanRequest::getAccounts), gen -> gen.collection().maxSize(numbers.size()))
+                .generate(field(LoanRequest::getAccounts), gen -> gen.collection().size(numbers.size()))
                 .generate(field(Account::getOrder), Generators::intSeq)
                 .supply(field(Account::getNumber), iterator::next)
                 .setModel(field(LoanRequest::getSchedule), createDueListModel())
