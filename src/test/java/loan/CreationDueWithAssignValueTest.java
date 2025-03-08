@@ -38,11 +38,13 @@ class CreationDueWithAssignValueTest {
                                 .as((BigDecimal amount) -> amount.subtract(BigDecimal.ONE)))
                 .create();
         log.info("due1: {}", due1);
-        Assertions.assertThat(due1.getAmountLocal()).as("due amountLocal1").isEqualTo(due1.getAmount().subtract(BigDecimal.ONE));
+        BigDecimal expectedAmountLocal1 = due1.getAmount().subtract(BigDecimal.ONE);
+        Assertions.assertThat(due1.getAmountLocal()).as("due amountLocal1").isEqualTo(expectedAmountLocal1);
 
         Due due2 = Instancio.of(dueModel).create();
         log.info("due2: {}", due2);
-        Assertions.assertThat(due2.getAmountLocal()).as("due amountLocal2").isEqualTo(due2.getAmount());
+        BigDecimal expectedAmountLocal2 = due2.getAmount();
+        Assertions.assertThat(due2.getAmountLocal()).as("due amountLocal2").isEqualTo(expectedAmountLocal2);
     }
 
     @Test
@@ -50,6 +52,7 @@ class CreationDueWithAssignValueTest {
     void testCreationDueWithAssignValueToObjectFromAnotherMethod() {
         Due due3 = Instancio.of(dueModel).create();
         log.info("due3: {}", due3);
-        Assertions.assertThat(due3.getAmountLocal()).as("due amountLocal3").isEqualTo(due3.getAmount());
+        BigDecimal expectedAmountLocal = due3.getAmount();
+        Assertions.assertThat(due3.getAmountLocal()).as("due amountLocal3").isEqualTo(expectedAmountLocal);
     }
 }
